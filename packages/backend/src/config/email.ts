@@ -1,10 +1,27 @@
+// In Cloudflare Workers, environment variables are directly available via `env`
+// @ts-ignore - env is available in Workers environment
+const getEnv = (key: string): string => {
+  // @ts-ignore - env is available in Workers environment
+  if (typeof env !== 'undefined' && env[key]) {
+    // @ts-ignore - env is available in Workers environment
+    return env[key];
+  }
+  // Fallback for local development with process.env
+  // @ts-ignore - process is available in Node.js environment
+  if (typeof process !== 'undefined' && process.env && process.env[key]) {
+    // @ts-ignore - process is available in Node.js environment
+    return process.env[key] as string;
+  }
+  return '';
+};
+
 export const emailConfig = {
-  serviceId: process.env.EMAILJS_SERVICE_ID || '',
-  templateId: process.env.EMAILJS_TEMPLATE_ID || '',
-  publicKey: process.env.EMAILJS_PUBLIC_KEY || '',
-  privateKey: process.env.EMAILJS_PRIVATE_KEY || '',
-  fromEmail: process.env.EMAIL_FROM || 'noreply@maxcash.com',
-  fromName: process.env.EMAIL_FROM_NAME || 'MaxCash Team',
+  serviceId: getEnv('EMAILJS_SERVICE_ID'),
+  templateId: getEnv('EMAILJS_TEMPLATE_ID'),
+  publicKey: getEnv('EMAILJS_PUBLIC_KEY'),
+  privateKey: getEnv('EMAILJS_PRIVATE_KEY'),
+  fromEmail: getEnv('EMAIL_FROM') || 'noreply@maxcash.com',
+  fromName: getEnv('EMAIL_FROM_NAME') || 'MaxCash Team',
   rateLimit: {
     maxPerMinute: 5,
     maxPerHour: 20,

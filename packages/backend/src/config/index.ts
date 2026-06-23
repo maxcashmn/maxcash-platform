@@ -4,7 +4,6 @@ export * from './database';
 export * from './email';
 export * from './whatsapp';
 
-// Central config object
 import { appConfig } from './app';
 import { authConfig } from './auth';
 import { databaseConfig } from './database';

@@ -1,0 +1,60 @@
+export const endpoints = {
+  auth: {
+    register: '/api/v1/auth/register',
+    login: '/api/v1/auth/login',
+    refresh: '/api/v1/auth/refresh',
+    logout: '/api/v1/auth/logout',
+    forgotPassword: '/api/v1/auth/forgot-password',
+    changePassword: '/api/v1/auth/change-password',
+  },
+  users: {
+    me: '/api/v1/users/me',
+    list: '/api/v1/users',
+    update: (id: string) => `/api/v1/users/${id}`,
+    updateStatus: (id: string) => `/api/v1/users/${id}/status`,
+    delete: (id: string) => `/api/v1/users/${id}`,
+  },
+  wallets: {
+    create: '/api/v1/wallets',
+    me: '/api/v1/wallets/me',
+    balance: '/api/v1/wallets/me/balance',
+    fund: '/api/v1/wallets/me/fund',
+    withdraw: '/api/v1/wallets/me/withdraw',
+  },
+  transfers: {
+    create: '/api/v1/transfers',
+    list: '/api/v1/transfers',
+    get: (id: string) => `/api/v1/transfers/${id}`,
+    byReference: (reference: string) => `/api/v1/transfers/reference/${reference}`,
+  },
+  transactions: {
+    create: '/api/v1/transactions',
+    list: '/api/v1/transactions',
+    get: (id: string) => `/api/v1/transactions/${id}`,
+    byReference: (reference: string) => `/api/v1/transactions/reference/${reference}`,
+  },
+  loans: {
+    create: '/api/v1/loans',
+    list: '/api/v1/loans',
+    get: (id: string) => `/api/v1/loans/${id}`,
+    approve: (id: string) => `/api/v1/loans/${id}/approve`,
+    reject: (id: string) => `/api/v1/loans/${id}/reject`,
+    disburse: (id: string) => `/api/v1/loans/${id}/disburse`,
+    active: '/api/v1/loans/active/all',
+  },
+  notifications: {
+    list: '/api/v1/notifications',
+    unread: '/api/v1/notifications/unread',
+    markRead: (id: string) => `/api/v1/notifications/${id}/read`,
+  },
+  reports: {
+    transactions: '/api/v1/reports/transactions',
+    loans: '/api/v1/reports/loans',
+    users: '/api/v1/reports/users',
+  },
+  admin: {
+    health: '/api/v1/admin/health',
+    stats: '/api/v1/admin/stats',
+    reconciliation: '/api/v1/admin/reconciliation',
+  },
+} as const;

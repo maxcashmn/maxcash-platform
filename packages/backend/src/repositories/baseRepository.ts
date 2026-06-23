@@ -11,10 +11,15 @@ export interface Repository<T> {
 export abstract class BaseRepository<T> implements Repository<T> {
   protected abstract tableName: string;
   protected abstract mapToEntity(row: any): T;
+  protected env: any;
+
+  constructor(env?: any) {
+    this.env = env;
+  }
 
   // Public query method for child classes to use
   async query(sql: string, params?: any[]): Promise<any[]> {
-    return dbQuery(sql, params);
+    return dbQuery(sql, params, this.env);
   }
 
   async findById(id: string): Promise<T | null> {

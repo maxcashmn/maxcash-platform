@@ -1,0 +1,53 @@
+import { toast, ToastOptions } from 'react-toastify';
+
+export const useToast = () => {
+  const defaultOptions: ToastOptions = {
+    position: 'top-right',
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+  };
+
+  const success = (message: string, options?: ToastOptions) => {
+    toast.success(message, { ...defaultOptions, ...options });
+  };
+
+  const error = (message: string, options?: ToastOptions) => {
+    toast.error(message, { ...defaultOptions, ...options });
+  };
+
+  const info = (message: string, options?: ToastOptions) => {
+    toast.info(message, { ...defaultOptions, ...options });
+  };
+
+  const warning = (message: string, options?: ToastOptions) => {
+    toast.warning(message, { ...defaultOptions, ...options });
+  };
+
+  const custom = (message: string, options?: ToastOptions) => {
+    toast(message, { ...defaultOptions, ...options });
+  };
+
+  const promise = <T>(
+    promise: Promise<T>,
+    messages: {
+      pending: string;
+      success: string;
+      error: string;
+    },
+    options?: ToastOptions
+  ) => {
+    return toast.promise(promise, messages, { ...defaultOptions, ...options });
+  };
+
+  return {
+    success,
+    error,
+    info,
+    warning,
+    custom,
+    promise,
+  };
+};

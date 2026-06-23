@@ -24,7 +24,7 @@ export async function registerUser(data: {
   // Hash password
   const hashedPassword = await hashPassword(data.password);
 
-  // Create user
+  // Create user with password_hash included
   const user = await userRepo.create({
     id: generateId(),
     email: data.email,
@@ -33,10 +33,10 @@ export async function registerUser(data: {
     phoneNumber: data.phoneNumber,
     role: 'borrower',
     status: 'pending',
+    password_hash: hashedPassword,
+    email_verified: false,
+    phone_verified: false,
   });
-
-  // Update password separately
-  await userRepo.updatePassword(user.id, hashedPassword);
 
   // Generate tokens
   const token = await signJWT({

@@ -4,8 +4,9 @@ import { appConfig } from '../config';
 export function corsMiddleware() {
   return async (c: Context, next: Next) => {
     const origin = c.req.header('Origin') || '';
-    const allowedOrigins = appConfig.cors.allowedOrigins;
+    const allowedOrigins = appConfig.cors.allowedOrigins as readonly string[];
     
+    // Check if origin is allowed
     if (allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
       c.header('Access-Control-Allow-Origin', origin);
       c.header('Access-Control-Allow-Credentials', 'true');

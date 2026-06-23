@@ -1,4 +1,5 @@
 import { BaseRepository } from './baseRepository';
+import { generateId } from '../utils/helpers';
 
 export interface User {
   id: string;
@@ -42,6 +43,36 @@ export class UserRepository extends BaseRepository<User> {
       createdAt: row.created_at,
       updatedAt: row.updated_at,
     };
+  }
+
+  // Override create method to handle snake_case columns
+  async create(data: any): Promise<User> {
+    // Map camelCase to snake_case for database
+    const dbData: any = {
+      id: data.id || generateId(),
+      email: data.email,
+      first_name: data.firstName,
+      last_name: data.lastName,
+      role: data.role || 'borrower',
+      status: data.status || 'pending',
+    };
+    
+    // Add optional fields if present
+    if (data.phoneNumber) dbData.phone_number = data.phoneNumber;
+    if (data.password_hash) dbData.password_hash = data.password_hash;
+    if (data.email_verified !== undefined) dbData.email_verified = data.email_verified;
+    if (data.phone_verified !== undefined) dbData.phone_verified = data.phone_verified;
+    
+    const keys = Object.keys(dbData);
+    const values = Object.values(dbData);
+    const placeholders = keys.map((_, i) => `$${i + 1}`).join(', ');
+    const columns = keys.join(', ');
+    
+    const result = await this.query(
+      `INSERT INTO ${this.tableName} (${columns}) VALUES (${placeholders}) RETURNING *`,
+      values
+    );
+    return this.mapToEntity(result[0]);
   }
 
   async findByEmail(email: string): Promise<User | null> {
