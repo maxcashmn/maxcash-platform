@@ -34,3 +34,7 @@ temp/
 
 # Build outputs
 *.tsbuildinfo
+
+# Backend secrets
+packages/backend/wrangler.toml
+packages/backend/.env
